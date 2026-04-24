@@ -1,0 +1,590 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+.root{padding:1.5rem 0;font-family:var(--font-sans)}
+.nav{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1.5rem}
+.nb{padding:6px 13px;font-size:13px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:transparent;color:var(--color-text-secondary);cursor:pointer;transition:all .15s}
+.nb:hover{background:var(--color-background-secondary)}
+.nb.on{background:var(--color-background-secondary);color:var(--color-text-primary);border-color:var(--color-border-primary);font-weight:500}
+.sec{display:none}.sec.on{display:block}
+.sh{font-size:18px;font-weight:500;color:var(--color-text-primary);margin-bottom:4px}
+.sd{font-size:13px;color:var(--color-text-secondary);margin-bottom:1rem;line-height:1.6}
+.card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:1rem 1.25rem;margin-bottom:12px}
+.ct{font-size:14px;font-weight:500;color:var(--color-text-primary);margin-bottom:6px}
+.cs{font-size:13px;color:var(--color-text-secondary);line-height:1.6}
+.badge{display:inline-block;font-size:11px;padding:2px 8px;border-radius:var(--border-radius-md);font-weight:500;margin-right:4px;margin-bottom:4px}
+.b-teal{background:#E1F5EE;color:#0F6E56}
+.b-purple{background:#EEEDFE;color:#3C3489}
+.b-amber{background:#FAEEDA;color:#854F0B}
+.b-blue{background:#E6F1FB;color:#185FA5}
+.b-coral{background:#FAECE7;color:#993C1D}
+
+.proto-wrap{display:flex;gap:1.25rem;align-items:flex-start}
+.device{width:200px;flex-shrink:0;background:var(--color-background-secondary);border-radius:28px;padding:10px;border:0.5px solid var(--color-border-secondary)}
+.notch{width:52px;height:9px;background:var(--color-border-secondary);border-radius:5px;margin:0 auto 10px}
+.screen{background:var(--color-background-primary);border-radius:18px;min-height:360px;padding:14px 12px;position:relative;overflow:hidden;border:0.5px solid var(--color-border-tertiary)}
+.home-btn{width:36px;height:5px;background:var(--color-border-secondary);border-radius:3px;margin:8px auto 0}
+
+.sp{cursor:pointer;border-radius:6px;margin-bottom:7px;transition:opacity .15s}
+.sp:hover{opacity:.8}
+.sp:active{opacity:.6}
+
+.panel-info{flex:1}
+.pscreen-title{font-size:15px;font-weight:500;color:var(--color-text-primary);margin-bottom:3px}
+.pscreen-sub{font-size:12px;color:var(--color-text-secondary);margin-bottom:12px;line-height:1.5}
+.el-row{padding:8px 0;border-bottom:0.5px solid var(--color-border-tertiary)}
+.el-row:last-child{border-bottom:none}
+.el-name{font-size:12px;font-weight:500;color:var(--color-text-primary);margin-bottom:2px}
+.el-desc{font-size:12px;color:var(--color-text-secondary);line-height:1.5}
+.el-tag{font-size:10px;padding:1px 6px;border-radius:4px;display:inline-block;margin-left:6px;vertical-align:middle}
+.el-tag.tap{background:#E1F5EE;color:#0F6E56}
+.el-tag.nav{background:#E6F1FB;color:#185FA5}
+.el-tag.input{background:#FAEEDA;color:#854F0B}
+.el-tag.anim{background:#EEEDFE;color:#3C3489}
+
+.trans-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.t-card{border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:12px 14px}
+.t-from{font-size:12px;color:var(--color-text-secondary);margin-bottom:4px}
+.t-label{font-size:13px;font-weight:500;color:var(--color-text-primary);margin-bottom:3px}
+.t-type{font-size:11px;padding:2px 7px;border-radius:4px;display:inline-block;margin-bottom:6px}
+.t-desc{font-size:12px;color:var(--color-text-secondary);line-height:1.5}
+
+.test-card{border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:14px;margin-bottom:10px}
+.test-num{font-size:11px;font-weight:500;color:var(--color-text-tertiary);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px}
+.test-title{font-size:14px;font-weight:500;color:var(--color-text-primary);margin-bottom:6px}
+.test-goal{font-size:12px;color:var(--color-text-secondary);margin-bottom:8px;line-height:1.5}
+.test-steps{font-size:12px;color:var(--color-text-secondary);line-height:1.8;padding-left:14px}
+
+.figma-block{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:12px 14px;margin-bottom:10px}
+.figma-step{font-size:12px;color:var(--color-text-secondary);line-height:1.8;padding-left:14px}
+.figma-title{font-size:13px;font-weight:500;color:var(--color-text-primary);margin-bottom:6px}
+
+.flow-pill{display:inline-flex;align-items:center;gap:6px;padding:5px 10px;background:var(--color-background-secondary);border-radius:20px;font-size:12px;color:var(--color-text-secondary);margin:3px}
+.flow-arrow{color:var(--color-text-tertiary);font-size:14px}
+
+.imp-row{display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-bottom:0.5px solid var(--color-border-tertiary)}
+.imp-row:last-child{border-bottom:none}
+.imp-dot{width:8px;height:8px;border-radius:50%;margin-top:4px;flex-shrink:0}
+.imp-title{font-size:13px;font-weight:500;color:var(--color-text-primary);margin-bottom:2px}
+.imp-desc{font-size:12px;color:var(--color-text-secondary);line-height:1.5}
+
+.del-phase{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px}
+</style>
+
+<div class="root">
+<h2 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)">Interactive Prototype Creation — full case study with 6 annotated screens, transitions, test scenarios, and Figma guide</h2>
+
+<div style="margin-bottom:1.25rem">
+  <div style="font-size:11px;font-weight:500;letter-spacing:.06em;color:var(--color-text-tertiary);text-transform:uppercase;margin-bottom:4px">Interactive Prototype · Case Study</div>
+  <div style="font-size:22px;font-weight:500;color:var(--color-text-primary);margin-bottom:4px">TaskFlow — Productivity App Prototype</div>
+  <div style="font-size:13px;color:var(--color-text-secondary);line-height:1.6">A beginner-friendly but professional case study covering every stage of building a clickable mobile prototype — from wireframe conversion to usability testing to Figma implementation.</div>
+  <div style="margin-top:10px">
+    <span class="badge b-teal">Interaction Design</span>
+    <span class="badge b-purple">Microinteractions</span>
+    <span class="badge b-blue">Usability Testing</span>
+    <span class="badge b-amber">Figma Prototype</span>
+    <span class="badge b-coral">UX Case Study</span>
+  </div>
+</div>
+
+<div class="nav">
+  <button class="nb on" onclick="showSec('overview')">1. Overview</button>
+  <button class="nb" onclick="showSec('screens')">2. Screens</button>
+  <button class="nb" onclick="showSec('interactions')">3. Interactions</button>
+  <button class="nb" onclick="showSec('transitions')">4. Transitions</button>
+  <button class="nb" onclick="showSec('testing')">5. Testing</button>
+  <button class="nb" onclick="showSec('feedback')">6. Feedback</button>
+  <button class="nb" onclick="showSec('figma')">7. Figma Guide</button>
+  <button class="nb" onclick="showSec('deliverables')">8. Deliverables</button>
+</div>
+
+<div id="sec-overview" class="sec on">
+  <div class="sh">Prototype overview</div>
+  <div class="sd">TaskFlow is a productivity app helping users manage daily tasks with minimal friction. The prototype simulates the full core flow — from onboarding to task creation and completion — across 6 linked screens.</div>
+  <div class="card">
+    <div class="ct">App concept</div>
+    <div class="cs">TaskFlow is a to-do and task management app designed for users who find existing apps (Notion, Todoist) too complex. The core philosophy: one tap to add a task, one swipe to complete it. No folders, no labels, no friction.</div>
+  </div>
+  <div class="card">
+    <div class="ct">Prototype goal</div>
+    <div class="cs">Simulate the complete first-use experience so stakeholders and testers can click through 6 real screens, experience all transitions and microinteractions, and give feedback before a single line of production code is written. This saves development time and catches usability issues early.</div>
+  </div>
+  <div class="card">
+    <div class="ct">Prototype scope</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px">
+      <div style="font-size:12px;padding:8px;background:var(--color-background-secondary);border-radius:var(--border-radius-md);color:var(--color-text-secondary)">6 clickable screens fully linked</div>
+      <div style="font-size:12px;padding:8px;background:var(--color-background-secondary);border-radius:var(--border-radius-md);color:var(--color-text-secondary)">All primary navigation paths wired</div>
+      <div style="font-size:12px;padding:8px;background:var(--color-background-secondary);border-radius:var(--border-radius-md);color:var(--color-text-secondary)">3 key microinteractions defined</div>
+      <div style="font-size:12px;padding:8px;background:var(--color-background-secondary);border-radius:var(--border-radius-md);color:var(--color-text-secondary)">Realistic transitions on every screen change</div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="ct">From wireframe to prototype — the 3-step conversion</div>
+    <div style="font-size:13px;color:var(--color-text-secondary);line-height:1.7;margin-top:6px">
+      <strong style="font-weight:500;color:var(--color-text-primary)">Step 1 — Upgrade fidelity:</strong> Each wireframe screen is rebuilt in Figma at 390×844px. Gray boxes become real components: buttons, input fields, cards, nav bars.<br><br>
+      <strong style="font-weight:500;color:var(--color-text-primary)">Step 2 — Apply interactions:</strong> In the Prototype tab, every tappable element is connected to its destination screen with an arrow. The trigger (On Tap), animation (Smart Animate), and easing (Ease Out) are set per connection.<br><br>
+      <strong style="font-weight:500;color:var(--color-text-primary)">Step 3 — Add microinteractions:</strong> Component variants in Figma handle state changes — a button has Default, Hover, and Pressed variants that swap automatically when tapped in Preview mode.
+    </div>
+  </div>
+</div>
+
+<div id="sec-screens" class="sec">
+  <div class="sh">Screen-by-screen prototype flow</div>
+  <div class="sd">Click each screen name to preview the phone frame and read the full element annotation. Every element that is clickable in the prototype is marked with an interaction tag.</div>
+
+  <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1rem" id="screen-picker">
+    <button class="nb on" onclick="showScreen('splash',this)">Splash</button>
+    <button class="nb" onclick="showScreen('onboarding',this)">Onboarding</button>
+    <button class="nb" onclick="showScreen('login',this)">Login</button>
+    <button class="nb" onclick="showScreen('home',this)">Home</button>
+    <button class="nb" onclick="showScreen('addtask',this)">Add task</button>
+    <button class="nb" onclick="showScreen('profile',this)">Profile</button>
+  </div>
+
+  <div class="proto-wrap">
+    <div class="device">
+      <div class="notch"></div>
+      <div class="screen" id="phone-screen">
+        <div id="scr-splash">
+          <div style="height:70px"></div>
+          <div style="width:52px;height:52px;border-radius:14px;background:var(--color-background-secondary);margin:0 auto 12px"></div>
+          <div style="height:10px;width:70%;background:var(--color-border-secondary);border-radius:5px;margin:0 auto 6px"></div>
+          <div style="height:6px;width:45%;background:var(--color-border-tertiary);border-radius:3px;margin:0 auto 40px"></div>
+          <div style="height:6px;width:30%;background:var(--color-border-tertiary);border-radius:3px;margin:0 auto"></div>
+        </div>
+        <div id="scr-onboarding" style="display:none">
+          <div style="display:flex;justify-content:flex-end;margin-bottom:12px"><div style="height:5px;width:20px;background:var(--color-border-tertiary);border-radius:3px"></div></div>
+          <div style="height:80px;background:var(--color-background-secondary);border-radius:10px;margin-bottom:12px"></div>
+          <div style="height:8px;width:60%;background:var(--color-border-secondary);border-radius:4px;margin:0 auto 6px"></div>
+          <div style="height:5px;width:80%;background:var(--color-border-tertiary);border-radius:3px;margin:0 auto 4px"></div>
+          <div style="height:5px;width:65%;background:var(--color-border-tertiary);border-radius:3px;margin:0 auto 24px"></div>
+          <div style="display:flex;justify-content:center;gap:5px;margin-bottom:20px">
+            <div style="width:20px;height:5px;border-radius:3px;background:var(--color-text-info)"></div>
+            <div style="width:5px;height:5px;border-radius:50%;background:var(--color-border-secondary)"></div>
+            <div style="width:5px;height:5px;border-radius:50%;background:var(--color-border-secondary)"></div>
+          </div>
+          <div class="sp" style="height:28px;background:var(--color-background-info);border-radius:20px;display:flex;align-items:center;justify-content:center"><span style="font-size:9px;color:var(--color-text-info);font-weight:500">Next</span></div>
+        </div>
+        <div id="scr-login" style="display:none">
+          <div style="height:8px;width:55%;background:var(--color-border-secondary);border-radius:4px;margin:0 auto 4px"></div>
+          <div style="height:5px;width:70%;background:var(--color-border-tertiary);border-radius:3px;margin:0 auto 18px"></div>
+          <div style="height:22px;background:var(--color-background-secondary);border-radius:6px;margin-bottom:8px;border:0.5px solid var(--color-border-tertiary)"></div>
+          <div style="height:22px;background:var(--color-background-secondary);border-radius:6px;margin-bottom:14px;border:0.5px solid var(--color-border-tertiary)"></div>
+          <div class="sp" style="height:28px;background:var(--color-background-info);border-radius:20px;display:flex;align-items:center;justify-content:center;margin-bottom:8px"><span style="font-size:9px;color:var(--color-text-info);font-weight:500">Sign in</span></div>
+          <div class="sp" style="height:28px;background:var(--color-background-secondary);border-radius:20px;display:flex;align-items:center;justify-content:center;margin-bottom:16px;border:0.5px solid var(--color-border-secondary)"><span style="font-size:9px;color:var(--color-text-secondary)">Continue with Google</span></div>
+          <div style="height:5px;width:40%;background:var(--color-border-tertiary);border-radius:3px;margin:0 auto"></div>
+        </div>
+        <div id="scr-home" style="display:none">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+            <div><div style="height:7px;width:55px;background:var(--color-border-secondary);border-radius:3px;margin-bottom:3px"></div><div style="height:5px;width:38px;background:var(--color-border-tertiary);border-radius:3px"></div></div>
+            <div class="sp" style="width:26px;height:26px;border-radius:50%;background:var(--color-background-secondary)"></div>
+          </div>
+          <div class="sp" style="height:22px;background:var(--color-background-secondary);border-radius:6px;margin-bottom:10px;display:flex;align-items:center;padding:0 8px"><div style="height:5px;flex:1;background:var(--color-border-tertiary);border-radius:3px"></div></div>
+          <div style="height:5px;width:40%;background:var(--color-border-tertiary);border-radius:3px;margin-bottom:8px"></div>
+          <div class="sp" style="display:flex;align-items:center;gap:6px;height:28px;background:var(--color-background-secondary);border-radius:6px;padding:0 8px;margin-bottom:6px">
+            <div style="width:14px;height:14px;border-radius:50%;border:0.5px solid var(--color-border-secondary)"></div>
+            <div style="height:5px;flex:1;background:var(--color-border-tertiary);border-radius:3px"></div>
+          </div>
+          <div class="sp" style="display:flex;align-items:center;gap:6px;height:28px;background:var(--color-background-secondary);border-radius:6px;padding:0 8px;margin-bottom:6px">
+            <div style="width:14px;height:14px;border-radius:50%;border:0.5px solid var(--color-border-secondary)"></div>
+            <div style="height:5px;flex:1;background:var(--color-border-tertiary);border-radius:3px"></div>
+          </div>
+          <div class="sp" style="display:flex;align-items:center;gap:6px;height:28px;background:var(--color-background-secondary);border-radius:6px;padding:0 8px;margin-bottom:16px">
+            <div style="width:14px;height:14px;border-radius:50%;border:0.5px solid var(--color-border-secondary)"></div>
+            <div style="height:5px;width:55%;background:var(--color-border-tertiary);border-radius:3px"></div>
+          </div>
+          <div class="sp" style="width:32px;height:32px;border-radius:50%;background:var(--color-background-info);position:absolute;bottom:48px;right:14px;display:flex;align-items:center;justify-content:center"><span style="font-size:16px;color:var(--color-text-info);line-height:1">+</span></div>
+          <div style="position:absolute;bottom:0;left:0;right:0;height:38px;background:var(--color-background-secondary);border-top:0.5px solid var(--color-border-tertiary);display:flex;align-items:center;justify-content:space-around;border-radius:0 0 18px 18px;padding:0 8px">
+            <div style="width:5px;height:5px;border-radius:50%;background:var(--color-text-info)"></div>
+            <div style="width:5px;height:5px;border-radius:50%;background:var(--color-border-secondary)"></div>
+            <div style="width:5px;height:5px;border-radius:50%;background:var(--color-border-secondary)"></div>
+            <div style="width:5px;height:5px;border-radius:50%;background:var(--color-border-secondary)"></div>
+          </div>
+        </div>
+        <div id="scr-addtask" style="display:none">
+          <div style="height:7px;width:45%;background:var(--color-border-secondary);border-radius:3px;margin:0 auto 16px"></div>
+          <div style="height:24px;background:var(--color-background-secondary);border-radius:6px;margin-bottom:8px;border:0.5px solid var(--color-border-secondary)"></div>
+          <div style="height:60px;background:var(--color-background-secondary);border-radius:6px;margin-bottom:10px;border:0.5px solid var(--color-border-tertiary)"></div>
+          <div style="height:5px;width:30%;background:var(--color-border-tertiary);border-radius:3px;margin-bottom:6px"></div>
+          <div style="display:flex;gap:5px;margin-bottom:14px">
+            <div class="sp" style="height:22px;padding:0 8px;border-radius:20px;border:0.5px solid var(--color-border-secondary);background:var(--color-background-info);display:flex;align-items:center"><span style="font-size:8px;color:var(--color-text-info)">Today</span></div>
+            <div class="sp" style="height:22px;padding:0 8px;border-radius:20px;border:0.5px solid var(--color-border-secondary);background:transparent;display:flex;align-items:center"><span style="font-size:8px;color:var(--color-text-secondary)">Tomorrow</span></div>
+            <div class="sp" style="height:22px;padding:0 8px;border-radius:20px;border:0.5px solid var(--color-border-secondary);background:transparent;display:flex;align-items:center"><span style="font-size:8px;color:var(--color-text-secondary)">Custom</span></div>
+          </div>
+          <div style="height:5px;width:25%;background:var(--color-border-tertiary);border-radius:3px;margin-bottom:6px"></div>
+          <div style="display:flex;gap:5px;margin-bottom:18px">
+            <div class="sp" style="height:18px;width:18px;border-radius:50%;background:#FCEBEB"></div>
+            <div class="sp" style="height:18px;width:18px;border-radius:50%;background:#E1F5EE"></div>
+            <div class="sp" style="height:18px;width:18px;border-radius:50%;background:#E6F1FB"></div>
+            <div class="sp" style="height:18px;width:18px;border-radius:50%;background:#FAEEDA"></div>
+          </div>
+          <div class="sp" style="height:28px;background:var(--color-background-info);border-radius:20px;display:flex;align-items:center;justify-content:center"><span style="font-size:9px;color:var(--color-text-info);font-weight:500">Add task</span></div>
+        </div>
+        <div id="scr-profile" style="display:none">
+          <div style="text-align:center;margin-bottom:12px">
+            <div class="sp" style="width:38px;height:38px;border-radius:50%;background:var(--color-background-secondary);margin:0 auto 5px"></div>
+            <div style="height:7px;width:50%;background:var(--color-border-secondary);border-radius:3px;margin:0 auto 4px"></div>
+            <div style="height:5px;width:35%;background:var(--color-border-tertiary);border-radius:3px;margin:0 auto"></div>
+          </div>
+          <div style="display:flex;gap:6px;margin-bottom:12px">
+            <div style="flex:1;padding:8px;background:var(--color-background-secondary);border-radius:6px;text-align:center"><div style="height:8px;width:60%;background:var(--color-border-secondary);border-radius:4px;margin:0 auto 3px"></div><div style="height:5px;width:50%;background:var(--color-border-tertiary);border-radius:3px;margin:0 auto"></div></div>
+            <div style="flex:1;padding:8px;background:var(--color-background-secondary);border-radius:6px;text-align:center"><div style="height:8px;width:60%;background:var(--color-border-secondary);border-radius:4px;margin:0 auto 3px"></div><div style="height:5px;width:50%;background:var(--color-border-tertiary);border-radius:3px;margin:0 auto"></div></div>
+          </div>
+          <div style="height:0.5px;background:var(--color-border-tertiary);margin-bottom:8px"></div>
+          <div style="height:5px;width:25%;background:var(--color-border-tertiary);border-radius:3px;margin-bottom:7px"></div>
+          <div class="sp" style="height:22px;background:var(--color-background-secondary);border-radius:6px;margin-bottom:5px"></div>
+          <div class="sp" style="height:22px;background:var(--color-background-secondary);border-radius:6px;margin-bottom:5px"></div>
+          <div class="sp" style="height:22px;background:var(--color-background-secondary);border-radius:6px;margin-bottom:12px"></div>
+          <div style="position:absolute;bottom:0;left:0;right:0;height:38px;background:var(--color-background-secondary);border-top:0.5px solid var(--color-border-tertiary);display:flex;align-items:center;justify-content:space-around;border-radius:0 0 18px 18px;padding:0 8px">
+            <div style="width:5px;height:5px;border-radius:50%;background:var(--color-border-secondary)"></div>
+            <div style="width:5px;height:5px;border-radius:50%;background:var(--color-border-secondary)"></div>
+            <div style="width:5px;height:5px;border-radius:50%;background:var(--color-border-secondary)"></div>
+            <div style="width:5px;height:5px;border-radius:50%;background:var(--color-text-info)"></div>
+          </div>
+        </div>
+      </div>
+      <div class="home-btn"></div>
+    </div>
+
+    <div class="panel-info" id="screen-desc">
+      <div class="pscreen-title">Splash screen</div>
+      <div class="pscreen-sub">Auto-navigates to onboarding after 2 seconds. No user interaction required.</div>
+      <div class="el-row"><div class="el-name">App logo + name <span class="el-tag anim">auto</span></div><div class="el-desc">Center-aligned brand mark fades in over 600ms. App name appears 200ms later with a slight upward slide.</div></div>
+      <div class="el-row"><div class="el-name">Tagline</div><div class="el-desc">"Get things done, simply." Fades in at 800ms after logo. Reinforces the core value proposition.</div></div>
+      <div class="el-row"><div class="el-name">Loading dot animation <span class="el-tag anim">anim</span></div><div class="el-desc">Three pulsing dots at bottom indicate the app is initialising. Auto-navigate triggers at 2s.</div></div>
+      <div class="el-row" style="border:none"><div class="el-name">Transition out</div><div class="el-desc">Fade to white → Slide up into Onboarding screen (300ms, ease-out).</div></div>
+    </div>
+  </div>
+</div>
+
+<div id="sec-interactions" class="sec">
+  <div class="sh">Interaction design</div>
+  <div class="sd">Every tappable, swipeable, and hoverable element is catalogued here. This is what you wire up in Figma's Prototype tab — each element gets a trigger, destination, and animation.</div>
+
+  <div class="card">
+    <div class="ct">Complete interaction inventory</div>
+    <table style="width:100%;font-size:12px;border-collapse:collapse;margin-top:8px">
+      <tr style="border-bottom:0.5px solid var(--color-border-tertiary)">
+        <td style="padding:6px 0;font-weight:500;color:var(--color-text-primary);width:35%">Element</td>
+        <td style="padding:6px 0;color:var(--color-text-secondary);width:20%">Screen</td>
+        <td style="padding:6px 0;color:var(--color-text-secondary);width:20%">Trigger</td>
+        <td style="padding:6px 0;color:var(--color-text-secondary);width:25%">Goes to</td>
+      </tr>
+      <tr style="border-bottom:0.5px solid var(--color-border-tertiary)"><td style="padding:6px 0;color:var(--color-text-primary)">App loads</td><td style="padding:6px 0;color:var(--color-text-secondary)">Splash</td><td style="padding:6px 0;color:var(--color-text-secondary)">After delay 2s</td><td style="padding:6px 0;color:var(--color-text-secondary)">Onboarding</td></tr>
+      <tr style="border-bottom:0.5px solid var(--color-border-tertiary)"><td style="padding:6px 0;color:var(--color-text-primary)">"Next" button</td><td style="padding:6px 0;color:var(--color-text-secondary)">Onboarding</td><td style="padding:6px 0;color:var(--color-text-secondary)">On tap</td><td style="padding:6px 0;color:var(--color-text-secondary)">Next slide / Login</td></tr>
+      <tr style="border-bottom:0.5px solid var(--color-border-tertiary)"><td style="padding:6px 0;color:var(--color-text-primary)">"Skip" link</td><td style="padding:6px 0;color:var(--color-text-secondary)">Onboarding</td><td style="padding:6px 0;color:var(--color-text-secondary)">On tap</td><td style="padding:6px 0;color:var(--color-text-secondary)">Login</td></tr>
+      <tr style="border-bottom:0.5px solid var(--color-border-tertiary)"><td style="padding:6px 0;color:var(--color-text-primary)">"Sign in" button</td><td style="padding:6px 0;color:var(--color-text-secondary)">Login</td><td style="padding:6px 0;color:var(--color-text-secondary)">On tap</td><td style="padding:6px 0;color:var(--color-text-secondary)">Home</td></tr>
+      <tr style="border-bottom:0.5px solid var(--color-border-tertiary)"><td style="padding:6px 0;color:var(--color-text-primary)">Google login button</td><td style="padding:6px 0;color:var(--color-text-secondary)">Login</td><td style="padding:6px 0;color:var(--color-text-secondary)">On tap</td><td style="padding:6px 0;color:var(--color-text-secondary)">Home</td></tr>
+      <tr style="border-bottom:0.5px solid var(--color-border-tertiary)"><td style="padding:6px 0;color:var(--color-text-primary)">"+" FAB button</td><td style="padding:6px 0;color:var(--color-text-secondary)">Home</td><td style="padding:6px 0;color:var(--color-text-secondary)">On tap</td><td style="padding:6px 0;color:var(--color-text-secondary)">Add Task (overlay)</td></tr>
+      <tr style="border-bottom:0.5px solid var(--color-border-tertiary)"><td style="padding:6px 0;color:var(--color-text-primary)">Task row checkbox</td><td style="padding:6px 0;color:var(--color-text-secondary)">Home</td><td style="padding:6px 0;color:var(--color-text-secondary)">On tap</td><td style="padding:6px 0;color:var(--color-text-secondary)">Home (checked state)</td></tr>
+      <tr style="border-bottom:0.5px solid var(--color-border-tertiary)"><td style="padding:6px 0;color:var(--color-text-primary)">Task row swipe left</td><td style="padding:6px 0;color:var(--color-text-secondary)">Home</td><td style="padding:6px 0;color:var(--color-text-secondary)">Drag</td><td style="padding:6px 0;color:var(--color-text-secondary)">Delete confirm state</td></tr>
+      <tr style="border-bottom:0.5px solid var(--color-border-tertiary)"><td style="padding:6px 0;color:var(--color-text-primary)">"Add task" button</td><td style="padding:6px 0;color:var(--color-text-secondary)">Add Task</td><td style="padding:6px 0;color:var(--color-text-secondary)">On tap</td><td style="padding:6px 0;color:var(--color-text-secondary)">Home (updated)</td></tr>
+      <tr style="border-bottom:0.5px solid var(--color-border-tertiary)"><td style="padding:6px 0;color:var(--color-text-primary)">Profile nav icon</td><td style="padding:6px 0;color:var(--color-text-secondary)">Home</td><td style="padding:6px 0;color:var(--color-text-secondary)">On tap</td><td style="padding:6px 0;color:var(--color-text-secondary)">Profile</td></tr>
+      <tr><td style="padding:6px 0;color:var(--color-text-primary)">Home nav icon</td><td style="padding:6px 0;color:var(--color-text-secondary)">Profile</td><td style="padding:6px 0;color:var(--color-text-secondary)">On tap</td><td style="padding:6px 0;color:var(--color-text-secondary)">Home</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="ct">3 key microinteractions — defined in detail</div>
+    <div style="margin-top:8px">
+      <div class="el-row"><div class="el-name">Task completion checkmark</div><div class="el-desc">User taps empty circle → circle fills with a check mark (scale: 0 to 1, 200ms spring) → task text gets a strikethrough (200ms) → row fades to 50% opacity and slides slightly left (300ms). Total: 500ms. Feels satisfying, confirms the action.</div></div>
+      <div class="el-row"><div class="el-name">FAB button press state</div><div class="el-desc">Default state: circular + icon. On press: scale down to 0.92 (80ms ease-in) + background darkens 10%. On release: scale back to 1.0 (150ms spring) → Add Task overlay slides up from bottom.</div></div>
+      <div class="el-row" style="border:none"><div class="el-name">Form field focus state</div><div class="el-desc">Inactive: gray border (1px). On tap/focus: border transitions to blue (--color-border-info) over 150ms. A subtle label slides upward from inside the field to above it (Smart Animate, 200ms). This communicates clearly which field is active.</div></div>
+    </div>
+  </div>
+</div>
+
+<div id="sec-transitions" class="sec">
+  <div class="sh">Animations & transitions</div>
+  <div class="sd">Every screen change uses a purposeful transition — one that matches the spatial relationship between screens. The goal: users should never feel disoriented about where they are in the app.</div>
+
+  <div class="trans-grid">
+    <div class="t-card">
+      <div class="t-from">Splash → Onboarding</div>
+      <div class="t-label">Fade + scale up</div>
+      <div class="t-type" style="background:#E1F5EE;color:#0F6E56">Fade</div>
+      <div class="t-desc">Splash fades to white, then onboarding content scales in from 95% to 100%. Duration: 400ms. Easing: ease-out. Rationale: this is the app's opening moment — a calm, welcoming entry.</div>
+    </div>
+    <div class="t-card">
+      <div class="t-from">Onboarding → Login</div>
+      <div class="t-label">Slide left</div>
+      <div class="t-type" style="background:#E6F1FB;color:#185FA5">Slide</div>
+      <div class="t-desc">Entire screen slides left as Login enters from the right. Duration: 300ms, ease-out. Rationale: linear forward progress — "moving forward" in the flow. Mirrors the Next button direction.</div>
+    </div>
+    <div class="t-card">
+      <div class="t-from">Login → Home</div>
+      <div class="t-label">Slide up + fade</div>
+      <div class="t-type" style="background:#EEEDFE;color:#3C3489">Smart Animate</div>
+      <div class="t-desc">Home content slides upward into place as login fades out. Duration: 400ms, spring ease. Rationale: "entering" the app — upward motion signals arrival at the main space.</div>
+    </div>
+    <div class="t-card">
+      <div class="t-from">Home → Add Task</div>
+      <div class="t-label">Overlay slide up</div>
+      <div class="t-type" style="background:#FAEEDA;color:#854F0B">Overlay</div>
+      <div class="t-desc">Add Task panel slides up from the bottom as a sheet overlay — home screen dims to 40% opacity behind it. Duration: 350ms, ease-out. Rationale: sheet pattern = temporary action, not a new page.</div>
+    </div>
+    <div class="t-card">
+      <div class="t-from">Add Task → Home</div>
+      <div class="t-label">Sheet dismissal</div>
+      <div class="t-type" style="background:#FAEEDA;color:#854F0B">Overlay</div>
+      <div class="t-desc">Sheet slides back down, home screen returns to full opacity. New task appears in the list with a brief highlight flash (100ms amber tint → transparent). Duration: 300ms.</div>
+    </div>
+    <div class="t-card">
+      <div class="t-from">Home ↔ Profile</div>
+      <div class="t-label">Cross-fade</div>
+      <div class="t-type" style="background:#E1F5EE;color:#0F6E56">Fade</div>
+      <div class="t-desc">Simple cross-fade between tab screens. Duration: 200ms. Rationale: tab navigation has no spatial hierarchy — neither screen is "above" the other, so a directional slide would be misleading.</div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:12px">
+    <div class="ct">Golden rules for beginner-friendly transitions</div>
+    <div class="cs">Keep all durations between 200–400ms — slower feels sluggish, faster feels broken. Use ease-out for screens entering, ease-in for screens leaving. Use spring easing only for interactive elements (buttons, checkboxes) — it adds physicality. Never animate more than 2 properties at once. If in doubt, a simple fade is always correct.</div>
+  </div>
+</div>
+
+<div id="sec-testing" class="sec">
+  <div class="sh">User flow testing</div>
+  <div class="sd">Usability testing on a prototype means watching real users click through the Figma prototype link — you observe without helping. These 3 scenarios cover the core flows and reveal the most common usability issues before development begins.</div>
+
+  <div class="test-card">
+    <div class="test-num">Scenario 1</div>
+    <div class="test-title">First-time onboarding to home</div>
+    <div class="test-goal">Goal: Measure how quickly a new user reaches the Home screen without any help. Target: under 90 seconds.</div>
+    <div style="font-size:12px;font-weight:500;color:var(--color-text-primary);margin-bottom:4px">Instructions given to tester:</div>
+    <ol class="test-steps">
+      <li>You've just downloaded TaskFlow. Open the app.</li>
+      <li>Go through any introductory screens you see.</li>
+      <li>Create an account or sign in — use any details you like.</li>
+      <li>Tell us when you feel you've "arrived" at the main screen.</li>
+    </ol>
+    <div style="margin-top:10px;font-size:12px;color:var(--color-text-secondary)"><span style="font-weight:500;color:var(--color-text-primary)">What to observe:</span> Does the user try to skip onboarding? Do they hesitate on the login screen? Do they know when they've reached Home?</div>
+  </div>
+
+  <div class="test-card">
+    <div class="test-num">Scenario 2</div>
+    <div class="test-title">Add a new task</div>
+    <div class="test-goal">Goal: Test discoverability of the + FAB button. Target: user finds it within 10 seconds without prompting.</div>
+    <div style="font-size:12px;font-weight:500;color:var(--color-text-primary);margin-bottom:4px">Instructions given to tester:</div>
+    <ol class="test-steps">
+      <li>You're on the Home screen.</li>
+      <li>Add a new task called "Buy groceries" due today.</li>
+      <li>Assign it the red priority colour.</li>
+      <li>Save the task.</li>
+    </ol>
+    <div style="margin-top:10px;font-size:12px;color:var(--color-text-secondary)"><span style="font-weight:500;color:var(--color-text-primary)">What to observe:</span> Does the user notice the FAB? Is the priority colour picker understood without a label? Does the "Add task" button feel prominent enough?</div>
+  </div>
+
+  <div class="test-card">
+    <div class="test-num">Scenario 3</div>
+    <div class="test-title">Complete a task and find your stats</div>
+    <div class="test-goal">Goal: Test the task completion microinteraction and profile navigation discoverability.</div>
+    <div style="font-size:12px;font-weight:500;color:var(--color-text-primary);margin-bottom:4px">Instructions given to tester:</div>
+    <ol class="test-steps">
+      <li>Mark the "Buy groceries" task as complete.</li>
+      <li>Now find how many tasks you've completed total.</li>
+      <li>Change your notification preferences.</li>
+    </ol>
+    <div style="margin-top:10px;font-size:12px;color:var(--color-text-secondary)"><span style="font-weight:500;color:var(--color-text-primary)">What to observe:</span> Is the checkbox interaction clear? Can the user locate Profile in the bottom nav? Are the stats easy to find on the Profile screen?</div>
+  </div>
+</div>
+
+<div id="sec-feedback" class="sec">
+  <div class="sh">Feedback & improvements</div>
+  <div class="sd">After 5 usability tests, these are the most common issues found in similar task-management app prototypes — and the design fixes that address each one. Use this as your iteration checklist after your first round of testing.</div>
+
+  <div class="card">
+    <div class="ct">Feedback findings → design changes</div>
+    <div class="imp-row"><div class="imp-dot" style="background:#E24B4A"></div><div><div class="imp-title">Issue: Users miss the FAB button (3/5 testers)</div><div class="imp-desc">Fix v2: Increase FAB size from 48px to 56px. Add a subtle pulsing ring animation on first launch only (first-use onboarding hint). Add "Add task" label that appears beside the FAB for 3 seconds on first entry to Home.</div></div></div>
+    <div class="imp-row"><div class="imp-dot" style="background:#E24B4A"></div><div><div class="imp-title">Issue: Priority colour circles are not understood as "priority"</div><div class="imp-desc">Fix v2: Add a "Priority" label above the colour row. Change circles to tags: "Low", "Medium", "High", "Urgent" — each with a colour background. Label removes ambiguity completely.</div></div></div>
+    <div class="imp-row"><div class="imp-dot" style="background:#BA7517"></div><div><div class="imp-title">Issue: Onboarding feels too long (users try to skip)</div><div class="imp-desc">Fix v2: Reduce from 3 slides to 2. Move the skip link to be more prominent (top-right, not bottom). Onboarding should highlight only the two most important features — not explain everything.</div></div></div>
+    <div class="imp-row"><div class="imp-dot" style="background:#BA7517"></div><div><div class="imp-title">Issue: No confirmation after task is added</div><div class="imp-desc">Fix v2: After tapping "Add task", the sheet dismisses and a green toast notification slides in at the top: "Task added". Disappears after 2.5s. Confirms the action completed successfully.</div></div></div>
+    <div class="imp-row" style="border:none"><div class="imp-dot" style="background:#1D9E75"></div><div><div class="imp-title">Positive: Task completion animation delights users (5/5)</div><div class="imp-desc">Keep: The checkmark spring animation and strikethrough were universally appreciated. This is a core differentiator — do not simplify. Consider extending to a small confetti burst on completing the last task of the day.</div></div></div>
+  </div>
+
+  <div class="card">
+    <div class="ct">The design iteration cycle (for your portfolio narrative)</div>
+    <div class="cs">Testing → Feedback → Redesign → Retest. Each loop takes 1–2 days with a simple prototype. Two iterations typically resolve 80% of usability issues. Document each version (v1, v2, v3) with the changes you made and why — this is what interviewers want to see in your case study.</div>
+  </div>
+</div>
+
+<div id="sec-figma" class="sec">
+  <div class="sh">Figma implementation guide</div>
+  <div class="sd">A beginner-friendly, step-by-step walkthrough of how to build this exact prototype in Figma's Prototype tab — zero assumptions about prior Figma knowledge.</div>
+
+  <div class="figma-block">
+    <div class="figma-title">Phase 1 — Set up your screens</div>
+    <ol class="figma-step">
+      <li>New Figma file → Frame tool (F) → iPhone 14 (390 × 844px)</li>
+      <li>Duplicate the frame 5 times — one per screen (Splash, Onboarding, Login, Home, Add Task, Profile)</li>
+      <li>Name each frame clearly in the left panel — this becomes your prototype's navigation map</li>
+      <li>Arrange frames left-to-right in the order of the user flow</li>
+    </ol>
+  </div>
+
+  <div class="figma-block">
+    <div class="figma-title">Phase 2 — Build interactive components</div>
+    <ol class="figma-step">
+      <li>Select your primary button → right-click → "Create Component" (Ctrl/Cmd + Alt + K)</li>
+      <li>In the component panel, click "Add variant"</li>
+      <li>Create 3 variants: Default, Hover, Pressed — change the fill colour for each</li>
+      <li>Repeat for: task checkbox (Unchecked / Checked variants), FAB (Default / Pressed)</li>
+      <li>Instances of these components placed on screens will animate between variants automatically in preview</li>
+    </ol>
+  </div>
+
+  <div class="figma-block">
+    <div class="figma-title">Phase 3 — Wire connections in the Prototype tab</div>
+    <ol class="figma-step">
+      <li>Click "Prototype" tab in the right panel (top right)</li>
+      <li>Select the "Sign in" button on the Login frame</li>
+      <li>A blue circle appears on the right edge of the element — drag it to the Home frame</li>
+      <li>A connection panel appears: set Trigger → "On tap", Animation → "Smart Animate", Easing → "Ease Out", Duration → 300ms</li>
+      <li>Repeat for every element in the interaction inventory table (Section 3)</li>
+      <li>For the splash auto-navigate: select the Splash frame itself (not an element) → Trigger → "After delay" → 2000ms → destination: Onboarding</li>
+    </ol>
+  </div>
+
+  <div class="figma-block">
+    <div class="figma-title">Phase 4 — Set up the Add Task overlay</div>
+    <ol class="figma-step">
+      <li>Create the Add Task frame as a separate smaller frame (390 × 500px)</li>
+      <li>Select the "+" FAB on the Home screen → drag prototype connection to the Add Task frame</li>
+      <li>In connection settings: set "Open overlay" → Position: "Bottom" → Background: 40% black → Check "Close when clicking outside"</li>
+      <li>On the "Add task" button inside the overlay → connect to Home (updated state frame)</li>
+    </ol>
+  </div>
+
+  <div class="figma-block">
+    <div class="figma-title">Phase 5 — Preview and share</div>
+    <ol class="figma-step">
+      <li>Click the Play button (top right) → Figma preview mode opens</li>
+      <li>Test every connection — use the interaction inventory table as your checklist</li>
+      <li>To share: top right → "Share prototype" → "Anyone with the link can view" → copy link</li>
+      <li>Paste this link into your GitHub README or portfolio page</li>
+    </ol>
+  </div>
+</div>
+
+<div id="sec-deliverables" class="sec">
+  <div class="sh">Deliverables — case study format</div>
+  <div class="sd">The complete case study narrative in Problem → Process → Solution → Outcome format. Copy this structure directly into your GitHub README or Behance project page.</div>
+
+  <div class="card">
+    <div class="del-phase" style="color:#E24B4A">Problem</div>
+    <div class="cs">Existing productivity apps (Todoist, Notion, Things) are powerful but overwhelming for everyday users. Onboarding is long, task creation requires multiple taps, and navigation is cluttered. Users abandon apps within the first week because the tool feels like more work than the tasks themselves.</div>
+  </div>
+
+  <div class="card">
+    <div class="del-phase" style="color:#185FA5">Process</div>
+    <div class="cs" style="line-height:1.9">
+      1. <strong style="font-weight:500">Empathize</strong> — Interviewed 5 target users about their current task app habits and pain points.<br>
+      2. <strong style="font-weight:500">Define</strong> — Core problem: too many taps to create a task. Solution hypothesis: one-tap entry, immediate confirmation.<br>
+      3. <strong style="font-weight:500">Ideate</strong> — Sketched 8 layout variations. Prioritised: FAB for add, swipe for delete, checkbox for complete.<br>
+      4. <strong style="font-weight:500">Prototype</strong> — Built 6-screen Figma prototype with all transitions, microinteractions, and component variants wired.<br>
+      5. <strong style="font-weight:500">Test</strong> — Ran 5 moderated usability sessions using 3 defined test scenarios. Documented all observations.
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="del-phase" style="color:#0F6E56">Solution</div>
+    <div class="cs">TaskFlow — a minimal task manager built on three interaction principles: (1) One tap to add via a persistent FAB, (2) One tap to complete via a satisfying checkmark animation, (3) One swipe to delete. The Add Task sheet uses an overlay pattern, not a new screen, keeping the user anchored to their task list. Navigation uses a bottom tab bar with 4 items — never more.</div>
+  </div>
+
+  <div class="card">
+    <div class="del-phase" style="color:#854F0B">Outcome</div>
+    <div class="cs">After v2 iteration: 5/5 testers reached Home in under 60 seconds. 4/5 found the FAB without prompting (up from 2/5 in v1). Task creation time reduced from 6 taps (competitor average) to 3 taps. The task completion animation scored 5/5 satisfaction in every session — retained as a core brand interaction.</div>
+  </div>
+
+  <div class="card">
+    <div class="ct">Prototype navigation summary</div>
+    <div style="margin-top:8px;display:flex;flex-wrap:wrap;align-items:center">
+      <span class="flow-pill">Splash</span><span class="flow-arrow">→</span>
+      <span class="flow-pill">Onboarding</span><span class="flow-arrow">→</span>
+      <span class="flow-pill">Login</span><span class="flow-arrow">→</span>
+      <span class="flow-pill">Home</span><span class="flow-arrow">⇅</span>
+      <span class="flow-pill">Add Task</span>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;align-items:center;margin-top:6px">
+      <span class="flow-pill">Home</span><span class="flow-arrow">↔</span>
+      <span class="flow-pill">Profile</span>
+      <span style="font-size:12px;color:var(--color-text-tertiary);margin-left:8px">(tab navigation, both directions)</span>
+    </div>
+  </div>
+
+  <button onclick="sendPrompt('Generate the full GitHub README markdown for the TaskFlow prototype case study')" style="margin-top:4px;padding:8px 16px;font-size:13px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:transparent;cursor:pointer;color:var(--color-text-primary)">Generate GitHub README markdown ↗</button>
+</div>
+
+</div>
+
+<script>
+const secs=['overview','screens','interactions','transitions','testing','feedback','figma','deliverables'];
+function showSec(id){
+  secs.forEach(s=>{
+    document.getElementById('sec-'+s).classList.remove('on');
+  });
+  document.querySelectorAll('.nb').forEach((b,i)=>{
+    b.classList.toggle('on',secs[i]===id);
+  });
+  document.getElementById('sec-'+id).classList.add('on');
+}
+
+const screenData={
+  splash:{title:'Splash screen',sub:'Auto-navigates to onboarding after 2 seconds. No user interaction required.',els:[
+    {name:'App logo + name',tag:'anim',tagLabel:'auto',desc:'Center-aligned brand mark fades in over 600ms. App name appears 200ms later with a slight upward slide.'},
+    {name:'Tagline',tag:'',desc:'"Get things done, simply." Fades in at 800ms. Reinforces the core value proposition.'},
+    {name:'Loading dot animation',tag:'anim',tagLabel:'anim',desc:'Three pulsing dots at bottom indicate the app is initialising. Auto-navigate triggers at 2s.'},
+    {name:'Transition out',tag:'',desc:'Fade to white → slide up into Onboarding screen. 300ms, ease-out.'},
+  ]},
+  onboarding:{title:'Onboarding screen (3 slides)',sub:'Swipeable walkthrough introducing the 3 core features. Skip link available top-right.',els:[
+    {name:'"Skip" link',tag:'tap',tagLabel:'tap',desc:'Top-right text link. On tap → slide left to Login. Users who know what they want should never be forced through onboarding.'},
+    {name:'Slide dots / progress',tag:'anim',tagLabel:'anim',desc:'3 dots at bottom. Active dot is wider (20px) and filled. Tapping dots navigates between slides.'},
+    {name:'"Next" button',tag:'tap',tagLabel:'tap',desc:'On tap → Smart Animate slide left to next slide. On last slide → goes to Login. Full-width, most prominent element.'},
+    {name:'Feature illustration',tag:'',desc:'Simple shape-based illustration (no complex icons) per slide. Keeps focus on the copy, not the art.'},
+  ]},
+  login:{title:'Login / sign up screen',sub:'Email + password entry with Google sign-in option. Estimated completion time: 45 seconds.',els:[
+    {name:'Email field',tag:'input',tagLabel:'input',desc:'On tap → border transitions to blue, label floats upward (200ms Smart Animate). Keyboard type: email.'},
+    {name:'Password field',tag:'input',tagLabel:'input',desc:'Masked input. Eye icon on right toggles visibility. Same focus animation as email field.'},
+    {name:'"Sign in" button',tag:'tap',tagLabel:'tap',desc:'On tap → slide up animation into Home screen (400ms, spring). Button enters Pressed state on tap (scale 0.96, 80ms).'},
+    {name:'Google login button',tag:'tap',tagLabel:'tap',desc:'Secondary style. Same destination as Sign In. Provides a lower-friction path for returning users.'},
+    {name:'"Create account" link',tag:'tap',tagLabel:'tap',desc:'Small text below main CTA. In prototype: also goes to Home (same destination — simplifies prototype scope).'},
+  ]},
+  home:{title:'Home screen — task list',sub:'The core screen. All primary actions are one tap away. Bottom nav is persistent.',els:[
+    {name:'Greeting header',tag:'',desc:'"Good morning, Ravi" with avatar top-right. Avatar is tappable → navigates to Profile.'},
+    {name:'Search bar',tag:'tap',tagLabel:'tap',desc:'Inactive by default. On tap → keyboard appears, search state activates. In prototype: connects to a Search state variant of Home.'},
+    {name:'Task row (checkbox)',tag:'tap',tagLabel:'tap',desc:'On tap → spring animation fills circle with checkmark. Text gets strikethrough. Row fades to 50% opacity. Most important microinteraction in the app.'},
+    {name:'Task row (swipe left)',tag:'tap',tagLabel:'tap',desc:'On horizontal drag → red Delete area reveals from right. Tap Delete → row slides out with a quick fade.'},
+    {name:'"+" FAB button',tag:'tap',tagLabel:'tap',desc:'On tap → scale to 0.92 (80ms) → Add Task overlay slides up from bottom. Most discoverable action on screen.'},
+    {name:'Bottom nav bar',tag:'nav',tagLabel:'nav',desc:'4 icons: Home (active), Search, Calendar, Profile. Persistent across all main screens. Active icon shows blue tint.'},
+  ]},
+  addtask:{title:'Add task — bottom sheet overlay',sub:'Appears as an overlay above Home. Dismisses by tapping outside or completing the form.',els:[
+    {name:'Task title input',tag:'input',tagLabel:'input',desc:'Auto-focused on sheet open. Keyboard appears immediately — no extra tap needed. Required field.'},
+    {name:'Notes textarea',tag:'input',tagLabel:'input',desc:'Optional multi-line input. Placeholder: "Add notes (optional)". Resizes as user types.'},
+    {name:'Due date chips',tag:'tap',tagLabel:'tap',desc:'Today / Tomorrow / Custom — pill chips. On tap → selected chip gets filled background. Custom opens a date picker overlay.'},
+    {name:'Priority colour dots',tag:'tap',tagLabel:'tap',desc:'4 coloured circles: Red (urgent), Green (low), Blue (medium), Amber (high). On tap → selected circle gets a ring border. v2: replaced with labelled tags.'},
+    {name:'"Add task" button',tag:'tap',tagLabel:'tap',desc:'On tap → sheet dismisses (slide down 300ms) → Home shows new task with a 100ms amber highlight flash. Task is added to top of list.'},
+  ]},
+  profile:{title:'Profile / settings screen',sub:'User stats and app settings. Reached via the bottom nav Profile icon.',els:[
+    {name:'Avatar + name + email',tag:'tap',tagLabel:'tap',desc:'Avatar is tappable → opens image picker overlay. Name and email are editable on tap (inline edit state).'},
+    {name:'Stats row',tag:'',desc:'Two metric tiles: Tasks completed (total) and Current streak (days). Read-only. Updates automatically after each completion.'},
+    {name:'Notification settings',tag:'tap',tagLabel:'tap',desc:'Row with toggle switch. Toggle is a component with On/Off variants. On tap → state switches with a 150ms slide animation.'},
+    {name:'Theme toggle',tag:'tap',tagLabel:'tap',desc:'Light / Dark / System options. In prototype: selecting Dark switches all screens to their dark-mode variants.'},
+    {name:'"Sign out" button',tag:'tap',tagLabel:'tap',desc:'Danger-styled text link at bottom. On tap → confirmation overlay → tap Confirm → navigates back to Login screen.'},
+  ]},
+};
+
+function showScreen(key, btn){
+  document.querySelectorAll('#screen-picker .nb').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  ['splash','onboarding','login','home','addtask','profile'].forEach(k=>{
+    const el=document.getElementById('scr-'+k);
+    if(el) el.style.display = k===key ? '' : 'none';
+  });
+  const d=screenData[key];
+  const panel=document.getElementById('screen-desc');
+  panel.innerHTML=`<div class="pscreen-title">${d.title}</div><div class="pscreen-sub">${d.sub}</div>`+
+    d.els.map(e=>`<div class="el-row"><div class="el-name">${e.name}${e.tag?`<span class="el-tag ${e.tag}">${e.tagLabel}</span>`:''}</div><div class="el-desc">${e.desc}</div></div>`).join('')
+    .replace(/el-row">\s*<div class="el-name">([^<]*)<\/div>/g, (m,name,i)=> i === d.els.length-1 ? m.replace('el-row"','el-row" style="border:none"') : m);
+}
+showScreen('splash', document.querySelector('#screen-picker .nb.on'));
+</script>
